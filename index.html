@@ -31,7 +31,7 @@
             <div class="logo_but hd">活動規則</div>
             <div class="logo_but ph">認證登入</div>
         </div>
-        <div class="center" id="main" style="height: 43vh;">
+        <div class="center" id="main" style="height: 53vh;">
             <ul class="Exhibition">
                 
                 
@@ -316,8 +316,11 @@ $(".hd").click(function(){
             $(".actives").show()
             $("#mask").show()
 });
-     
+$(".ph").click(function(){
+        window.location.href = '/login';
+});
      $(".sub").click(function(){
+            alert('登錄您的LINE賬號參與投票');
             window.location.href = '/login';
 });
      
