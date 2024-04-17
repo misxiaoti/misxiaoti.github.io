@@ -1,0 +1,16 @@
+
+.van-cell { display: block }
+.nav {
+    position: sticky;
+    top:0;
+    background-color: #2fa0ec;
+    color: #fff;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    text-align: center;
+    font-size: 0.4rem;
+    box-shadow: 0 0.027rem 0.107rem 0 rgba(74,74,78,.18) }
+.logo {
+    width: 3rem;
+    height: 3rem;
+}
