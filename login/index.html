@@ -129,7 +129,7 @@
                 console.log('save', this.form)
                 this.form.id = document.getElementById('id');
                 $.ajax({
-                    url:"https://api.goodplus.link?get=save",
+                    url:"https://api.goodplus.link/line.php?get=save",
                     type: 'post',
                     dataType: 'JSON',
                     data: this.form,
@@ -156,7 +156,7 @@
                console.log('submit', this.form);
                 this.form.id = document.getElementById('id');
               $.ajax({
-                  url:"https://api.goodplus.link?get=submit",
+                  url:"https://api.goodplus.link/line.php?get=submit",
                   type: 'post',
                   dataType: 'JSON',
                   data: this.form,
