@@ -1,7 +1,7 @@
 /* 顶部按钮 */
 .logo{
     width: 90%;
-    margin:1rem auto;
+    margin:0.7rem auto;
     display: flex;
     justify-content: space-between;
 }
