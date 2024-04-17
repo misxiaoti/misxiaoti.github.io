@@ -1,7 +1,13 @@
 /* 顶部按钮 */
+.body {
+        max-width: 450px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
 .logo{
     width: 90%;
-    margin:0.7rem auto;
+    margin:0.6rem auto;
     display: flex;
     justify-content: space-between;
 }
