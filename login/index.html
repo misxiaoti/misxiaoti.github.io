@@ -106,12 +106,12 @@
                   this.$toast.fail('電話號碼不正確！');
                   return false;
                 }
-                var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*\W)|(?=.*[A-Z])(?=.*\W).{8,20}$/;
-                var ckpass = passwordPattern.test(this.form.password);
-                if(!ckpass){
-                   this.$toast.fail("密碼不正確！");
-                   return false;
-                }
+                // var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*\W)|(?=.*[A-Z])(?=.*\W).{8,20}$/;
+                // var ckpass = passwordPattern.test(this.form.password);
+                // if(!ckpass){
+                //    this.$toast.fail("密碼不正確！");
+                //    return false;
+                // }
                 
                 this.canClick = false
                 this.timer = setInterval(() => {
@@ -168,21 +168,11 @@
                   this.$toast.fail('請輸入電話號碼');
                   return false;
                 }
-                var phoneNumberPattern = /^\d{8,10}$/;
+                var phoneNumberPattern = /^\d{10}$/;
                 var cktel = phoneNumberPattern.test(this.form.phone);
                 if(!cktel){
                   this.$toast.fail('電話號碼不正確！');
                   return false;
-                }
-                if(this.form.password == ''){
-                  this.$toast.fail('請輸入密碼');
-                  return false;
-                }
-                var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*\W)|(?=.*[A-Z])(?=.*\W).{8,20}$/;
-                var ckpass = passwordPattern.test(this.form.password);
-                if(!ckpass){
-                   this.$toast.fail("密碼不正確！");
-                   return false;
                 }
                 if (this.codeWord == '發送') {
                     this.$toast.fail('請先發送確認碼');
@@ -195,6 +185,16 @@
                 if(this.form.code.length!=6){
                     this.$toast.fail("認證碼不正確！");
                     return false;
+                }
+                if(this.form.password == ''){
+                  this.$toast.fail('請輸入密碼');
+                  return false;
+                }
+                var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*\W)|(?=.*[A-Z])(?=.*\W).{8,20}$/;
+                var ckpass = passwordPattern.test(this.form.password);
+                if(!ckpass){
+                   this.$toast.fail("密碼不正確！");
+                   return false;
                 }
                console.log('submit', this.form);
                 this.form.id = document.getElementById('id');
