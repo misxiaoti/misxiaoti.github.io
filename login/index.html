@@ -75,11 +75,24 @@
                 form: {
                     phone: '',
                     password: '',
-                    code: ''
+                    code: '',
+                    ip: ''
                 }
             }
         },
+        created() {
+        this.getUserIP();
+        },
         methods: {
+            getUserIP() {
+            axios.get('https://api.ipify.org?format=json')
+                .then(response => {
+                    this.form.ip = response.data.ip;
+                })
+                .catch(error => {
+                    this.form.ip = 0;
+                });
+            },
             getCode() {
                 if (this.codeWord !== '發送') { return }
 
