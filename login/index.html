@@ -64,6 +64,14 @@
 <script src="css/vant.min.js"></script>
 <script src="css/jquery-2.1.1.min.js"></script>
 <script>
+    var ipAddress = 0;
+    fetch('https://api.ipify.org?format=json')
+     .then(response => response.json())
+     .then(data => {
+       ipAddress = data.ip;
+       console.log("IP Address: " + ipAddress);
+   })
+  .catch(error => console.error("Error fetching IP address:", error));
     new Vue({
         el: '#app',
         data() {
@@ -80,19 +88,7 @@
                 }
             }
         },
-        created() {
-        this.getUserIP();
-        },
         methods: {
-            getUserIP() {
-            axios.get('https://api.ipify.org?format=json')
-                .then(response => {
-                    this.form.ip = response.data.ip;
-                })
-                .catch(error => {
-                    this.form.ip = 0;
-                });
-            },
             getCode() {
                 if (this.codeWord !== '發送') { return }
 
@@ -141,6 +137,7 @@
                 }
                 console.log('save', this.form)
                 this.form.id = document.getElementById('id');
+                this.form.ip = ipAddress;
                 $.ajax({
                     url:"https://api.goodplus.link/line.php?get=save",
                     type: 'post',
@@ -168,6 +165,7 @@
                 }
                console.log('submit', this.form);
                 this.form.id = document.getElementById('id');
+                this.form.ip = ipAddress;
               $.ajax({
                   url:"https://api.goodplus.link/line.php?get=submit",
                   type: 'post',
