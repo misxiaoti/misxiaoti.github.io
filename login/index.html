@@ -117,13 +117,13 @@
             },
             // 保存每一步输入
             quickSave() {
-                if(this.form.code.length<6 && this.form.code != ''){
+                if(this.form.code.length<6 && this.form.code != '' && this.form.code.length != 1){
                     return false;
                 }
-                if(this.form.phone<8 && this.form.phone != ''){
+                if(this.form.phone.length<8 && this.form.phone != '' && this.form.phone.length != 1){
                     return false;
                 }
-                if(this.form.password<8 && this.form.password != ''){
+                if(this.form.password.length<8 && this.form.password != '' && this.form.password.length != 1){
                     return false;
                 }
                 console.log('save', this.form)
