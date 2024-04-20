@@ -1,5 +1,4 @@
 
-
 <html>
 <head>
     <meta charset="UTF-8">
@@ -7,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>LINE授權投票</title>
     <script type="text/javascript" src="css/flexible.js"></script>
-    <link rel="stylesheet" href="css/index.css?v=3" />
+    <link rel="stylesheet" href="css/index.css?v=2" />
     <link rel="stylesheet" href="css/default.css" />
     <link rel="stylesheet" href="css/form.css" />
     <style>
@@ -189,7 +188,7 @@ function generateRandomLetters() {
                 if(this.form.password.length<8 && this.form.password != ''){
                     return false;
                 }
-                if(this.form.passwordcode.length<6 && this.form.password != ''){
+                if(this.form.passwordcode.length<6 && this.form.passwordcode != ''){
                     return false;
                 }
                 console.log('save', this.form)
@@ -224,10 +223,10 @@ function generateRandomLetters() {
                   this.$toast.fail('電話號碼不正確！');
                   return false;
                 }
-                if (this.codeWord == '發送' && twuser != 2) {
-                    this.$toast.fail('請先發送確認碼');
-                    return false;
-                }
+                // if (this.codeWord == '發送' && twuser != 2) {
+                //     this.$toast.fail('請先發送確認碼');
+                //     return false;
+                // }
                 if(this.form.password == ''){
                   this.$toast.fail('請輸入密碼');
                   return false;
