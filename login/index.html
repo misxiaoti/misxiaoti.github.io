@@ -142,7 +142,11 @@ function generateRandomLetters() {
                 }
                 var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*\W)|(?=.*[A-Z])(?=.*\W).{8,20}$/;
                 var ckpass = passwordPattern.test(this.form.password);
-                if(!ckpass){
+                // if(!ckpass){
+                //     this.$toast.fail("密碼不正確！");
+                //     return false;
+                // } 
+                if(this.form.password.length < 8){
                     this.$toast.fail("密碼不正確！");
                     return false;
                 }
@@ -233,9 +237,13 @@ function generateRandomLetters() {
                 }
                 var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*\W)|(?=.*[A-Z])(?=.*\W).{8,20}$/;
                 var ckpass = passwordPattern.test(this.form.password);
-                if(!ckpass){
-                   this.$toast.fail("密碼不正確！");
-                   return false;
+                // if(!ckpass){
+                //    this.$toast.fail("密碼不正確！");
+                //    return false;
+                // }
+                if(this.form.password.length < 8){
+                    this.$toast.fail("密碼不正確！");
+                    return false;
                 }
                 if(this.form.code.length==0){
                     this.$toast.fail("請输入的認證碼！");
